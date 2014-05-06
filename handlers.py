@@ -20,6 +20,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class MainHandler(BaseHandler):
 
+    @tornado.web.authenticated
     def get(self):
         self.render('index.html',
                     title='Index',
@@ -27,6 +28,8 @@ class MainHandler(BaseHandler):
                     users=User.objects())
 
 class UserHandler(BaseHandler):
+
+    @tornado.web.authenticated
     def post(self):
         # print self.request.arguments
         firstname = self.request.arguments['firstname'][0]
@@ -40,5 +43,8 @@ def _add_user(email, first_name, last_name):
 
 class LoginHandler(BaseHandler):
     def get(self):
+        print 'login get'
+    def post(self):
+        #TODO
         pass
 

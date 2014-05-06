@@ -3,42 +3,25 @@ import os.path
 import tornado.ioloop
 import tornado.web
 from mongoengine import connect
-from handlers import MainHandler, UserHandler
+from handlers import MainHandler, UserHandler, LoginHandler
 
 
-# class MainHandler(tornado.web.RequestHandler):
-#     def get(self):
-#         self.render('index.html',
-#                     title='Index',
-#                     message='Hello, world!',
-#                     users=User.objects())
-#
-# class UserHandler(tornado.web.RequestHandler):
-#     def post(self):
-#         # print self.request.arguments
-#         firstname = self.request.arguments['firstname'][0]
-#         lastname = self.request.arguments['lastname'][0]
-#         email= self.request.arguments['email'][0]
-#         _add_user(email, firstname, lastname)
-#         self.redirect('/')
-#
-#
-# def _add_user(email, first_name, last_name):
-#     User(email=email, first_name=first_name, last_name=last_name).save()
-#
 
 if __name__ == '__main__':
 
-    connect('vampire-blog')
+    db = 'vampire-blog'
+    connect(db)
     
     settings = {
         'template_path': os.path.join(
             os.path.dirname(__file__), 'templates'),
+        'login_url': r'/login',
     }
 
     app = tornado.web.Application([
-        (r'/', MainHandler),
+        (r'/', MainHandler, dict(db=db)),
         (r'/user', UserHandler),
+        (r'/login', LoginHandler),
     ], **settings)
 
     app.listen(8888)

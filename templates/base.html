@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <title>{% block title%}{{ title }}{% end %}</title>
+  </head>
+  <body>
+    <div class="header">
+      {% block header %}{{ message }}{% end %}
+    </div>
+    {% block main %}{% end %}
+    <div class="footer">
+    </div>
+  </body>
+</html>

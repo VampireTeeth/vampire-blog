@@ -16,6 +16,7 @@ if __name__ == '__main__':
         'template_path': os.path.join(
             os.path.dirname(__file__), 'templates'),
         'login_url': r'/login',
+        'cookie_secret': '26aac492159b5f66f196cbe496327ee937731357',
     }
 
     app = tornado.web.Application([

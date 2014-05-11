@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block header %}
+<span>{{message}}</span>
+<a href="/logout">Logout</a>
+{% end %}
 {% block main %}
 <div>
   <ul>

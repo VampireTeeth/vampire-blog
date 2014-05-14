@@ -6,11 +6,21 @@
 {% block main %}
 
 <form action="/login" method="post">
-  <label for="username">Username:</lable>
-  <input type="text" name="username"/>
-  <label for="password">Password:</lable>
-  <input type="password" name="password"/>
-  <span>{{errormsg}}</span>
-  <input type="submit" value="Login"/>
+    <div id="error">
+        <span>{{errormsg}}</span>
+    </div>
+    <fieldset id="email">
+        <legend>Email</legend>
+        <input type="text" name="email" value=""/>
+    </fieldset>
+
+    <fieldset id="password">
+        <legend>Password</legend>
+        <input type="password" name="password" value=""/>
+    </fieldset>
+
+    <fieldset id="submit">
+        <input type="submit" value="Signup"/>
+    </fieldset>
 </form>
 {% end %}

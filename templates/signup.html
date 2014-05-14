@@ -3,10 +3,32 @@
 {% block main %}
 
 <form action="/signup" method="post">
-  <label for="username">Username:</lable>
-  <input type="text" name="username"/>
-  <label for="password">Password:</lable>
-  <input type="password" name="password"/>
-  <input type="submit" value="Signup"/>
-</form>
+
+    <div id="error">
+        <span>{{errormsg}}</span>
+    </div>
+    <fieldset id="email">
+        <legend>Email</legend>
+        <input type="text" name="email" value=""/>
+    </fieldset>
+
+    <fieldset id="password">
+        <legend>Password</legend>
+        <input type="password" name="password" value=""/>
+    </fieldset>
+
+    <fieldset id="firstname">
+        <legend>First name</legend>
+        <input type="text" name="firstname" value=""/>
+    </fieldset>
+
+    <fieldset id="lastname">
+        <legend>Last name</legend>
+        <input type="text" name="lastname" value=""/>
+    </fieldset>
+
+    <fieldset id="submit">
+        <input type="submit" value="Signup"/>
+    </fieldset>
+  </form>
 {% end %}

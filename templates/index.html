@@ -6,21 +6,33 @@
 {% end %}
 {% block main %}
 <div>
+{% if articles %}
   <ul>
-    {% for u in users %}
-    <li>{{ u.first_name }} {{ u.last_name }} {{ u.email }}</li>
+    {% for a in articles %}
+    <li>{{ a.title}}</li>
     {% end %}
   </ul>
+{% else %}
+  <h3>No articles</h3>
+{% end %}
 </div>
-<div>
-  <form action="/user" method="post">
-    <label for="firstname">First name:</lable>
-    <input type="text" name="firstname"/>
-    <label for="lastname">Last name:</lable>
-    <input type="text" name="lastname"/>
-    <label for="email">Email:</lable>
-    <input type="text" name="email"/>
-    <input type="submit" value="Create"/>
-  </form>
+<div id="article">
+    <form action="/article/add" method="post" accept-charset="utf-8">
+        <div id="error">
+            <span>{{errormsg}}</span>
+        </div>
+
+        <fieldset id="title">
+            <legend>title</legend>
+            <input type="text" name="title" value=""/>
+        </fieldset>
+        <fieldset id="content">
+            <legend>content</legend>
+            <textarea rows="30" cols="50" name="content"></textarea>
+        </fieldset>
+        <fieldset id="add">
+            <input type="submit" value="Add article"/>
+        </fieldset>
+    </form>
 </div>
 {% end %}

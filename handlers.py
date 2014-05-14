@@ -1,7 +1,6 @@
 import tornado.web
 import tornado.escape
-from models import User, Login
-
+from models import User, Article
 
 
 
@@ -18,9 +17,10 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         return self.get_secure_cookie('user')
 
-    def set_current_user(self, username):
-        if username:
-            self.set_secure_cookie('user', tornado.escape.json_encode(username))
+    def set_current_user(self, user):
+        if user:
+            d = {'email' : user.email, 'firstname':user.first_name, 'lastname':user.last_name}
+            self.set_secure_cookie('user', tornado.escape.json_encode(d))
         else:
             self.clear_cookie('user')
 
@@ -29,10 +29,13 @@ class MainHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
+        d = tornado.escape.json_decode(self.current_user)
+        u = User.objects(email=d['email'])[0]
         self.render('index.html',
                     title='Index',
-                    message='Hello, %s' % (tornado.escape.json_decode(self.current_user),),
-                    users=User.objects())
+                    message='Hello, %s %s' % (d['firstname'], d['lastname']),
+                    errormsg=self.get_argument('errormsg', ''),
+                    articles=Article.objects(author=u))
 
 class UserHandler(BaseHandler):
 
@@ -54,14 +57,22 @@ class SignupHandler(BaseHandler):
     def get(self):
         self.render('signup.html',
                 title='Signup',
-                message='Please input your information below to signup')
+                message='Please input your information below to signup', 
+                errormsg=self.get_argument('errormsg', ''))
 
     def post(self):
-        username = self.get_argument('username')
-        password = self.get_argument('password')
-        Login(username=username, password=password).save()
-        self.set_current_user(username)
-        self.redirect('/')
+        email = self.get_argument('email')
+        users = User.objects(email=email)
+        if users:
+            error = '?errormsg=' + tornado.escape.url_escape('User already exists')
+            self.redirect(u'/signup' + error)
+        else:
+            firstname = self.get_argument('firstname')
+            lastname = self.get_argument('lastname')
+            password = self.get_argument('password')
+            u = User(email=email, first_name=firstname, last_name=lastname, password=password).save()
+            self.set_current_user(u)
+            self.redirect('/')
 
 
 class LoginHandler(BaseHandler):
@@ -76,26 +87,50 @@ class LoginHandler(BaseHandler):
                     errormsg=self.get_argument('errormsg', ''))
 
     def post(self):
-        username = self.get_argument('username')
+        email = self.get_argument('email')
         password = self.get_argument('password')
-        print username, password
-        if self.check_permission(username, password):
+        print email, password
+        u, err = self.check_permission(email, password)
+        if u:
             print 'Authenticated'
-            self.set_current_user(username)
+            self.set_current_user(u)
             self.redirect(self.get_argument('next', u'/'))
         else:
-            error = '?errormsg=' + tornado.escape.url_escape('Login incorrect')
+            error = '?errormsg=' + tornado.escape.url_escape(err)
             self.redirect(u'/login' + error)
 
-    def check_permission(self, username, password):
-        users = Login.objects(username=username)
+    def check_permission(self, email, password):
+        users = User.objects(email=email)
         if users:
-            return password == users[0].password
+            if password == users[0].password:
+                return users[0], None
+            else:
+                return None, 'Incorrect password'
         else:
-            return False;
+            return None, 'User inexists'
 
     
 class LogoutHandler(BaseHandler):
     def get(self):
         self.set_current_user(None)
         self.redirect('/')
+
+
+class ArticleHandler(BaseHandler):
+
+    @tornado.web.authenticated
+    def post(self):
+        u = tornado.escape.json_decode(self.current_user)
+        title = self.get_argument('title')
+        content = self.get_argument('content')
+        if not title: 
+            self.redirect(r'/?errormsg=' + tornado.escape.url_escape('Title cannot be empty'))
+        elif not content:
+            self.redirect(r'/?errormsg=' + tornado.escape.url_escape('Content cannot be empty'))
+        else:
+            users = User.objects(email=u['email'])
+            if users:
+                u = users[0]
+                Article(title=title, content=content, author=u).save()
+                self.redirect(r'/')
+

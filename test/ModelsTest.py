@@ -21,6 +21,7 @@ class ArticleTest(BaseTest):
             self.assertEqual(u.first_name, 'Steven')
 
         b = models.Article(dateTime=datetime.datetime.now(),
+                title='First Article',
                 content='This is a sample blog content',
                 author=u)
         b.save()
@@ -35,7 +36,7 @@ class ArticleTest(BaseTest):
         u = models.User(first_name='Steven', last_name='Liu', email='steven.weike.liu@gmail.com')
         u.save()
 
-        b = models.Article(author=u)
+        b = models.Article(title='Title',author=u)
         b.save()
         bs = models.Article.objects(author=u)
 
@@ -47,8 +48,8 @@ class ArticleTest(BaseTest):
         u = models.User(first_name='Steven', last_name='Liu', email='steven.weike.liu@gmail.com')
         u.save()
 
-        b1 = models.Article(author=u, content='Blog1')
-        b2 = models.Article(author=u, content='Blog2')
+        b1 = models.Article(author=u, title='AAd', content='Blog1')
+        b2 = models.Article(author=u, title='another', content='Blog2')
 
         b1.save()
         b2.save()

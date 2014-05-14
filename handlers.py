@@ -45,7 +45,7 @@ class UserHandler(BaseHandler):
         self._add_user(email, firstname, lastname)
         self.redirect('/')
 
-    def _add_user(email, first_name, last_name):
+    def _add_user(self, email, first_name, last_name):
         User(email=email, first_name=first_name, last_name=last_name).save()
 
 

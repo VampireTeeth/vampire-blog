@@ -30,8 +30,10 @@ class MainHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         d = tornado.escape.json_decode(self.current_user)
-        u = User.objects(email=d['email'])[0]
-        self.render('index.html',
+        users = User.objects(email=d['email'])
+        if users:
+          u = users[0]
+          self.render('index.html',
                     title='Index',
                     message='Hello, %s %s' % (d['firstname'], d['lastname']),
                     errormsg=self.get_argument('errormsg', ''),

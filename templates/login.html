@@ -5,22 +5,22 @@
 {% end %}
 {% block main %}
 
-<form action="/login" method="post">
-    <div id="error">
-        <span>{{errormsg}}</span>
+  <form action="/login" method="post" id="loginform">
+    <div>
+        <span id="error">{{errormsg}}</span>
     </div>
-    <fieldset id="email">
+    <fieldset>
         <legend>Email</legend>
-        <input type="text" name="email" value=""/>
+        <input type="text" name="email" id="email" value=""/>
     </fieldset>
 
-    <fieldset id="password">
+    <fieldset>
         <legend>Password</legend>
-        <input type="password" name="password" value=""/>
+        <input type="password" name="password" id="password" value=""/>
     </fieldset>
 
-    <fieldset id="submit">
-        <input type="submit" value="Signup"/>
+    <fieldset>
+        <input type="submit" value="Signup" id="submit"/>
     </fieldset>
 </form>
 {% end %}

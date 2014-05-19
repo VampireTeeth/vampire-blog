@@ -1,12 +1,43 @@
 <html>
   <head>
     <title>{% block title%}{{ title }}{% end %}</title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/md5.js"></script>
     <!--
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     -->
+  <script type="text/javascript">
+    <!--
+    function hashpassword(){
+      var plain = $("#password").val();
+      if(plain == "") {
+        return false;
+      }
+      var md5 = CryptoJS.MD5(plain);
+      $("#password").val(md5);
+      return true;
+    };
+
+    function hashOnSubmit(formSel) {
+      $(formSel).submit(function(e){
+        if(!hashpassword()) {
+          alert("Password cannot be empty");
+          e.preventDefault();
+        }
+      });
+    };
+
+    $(document).ready(function(e){
+      hashOnSubmit("#signupform");
+      hashOnSubmit("#loginform");
+    });
+    //-->
+  </script>
   </head>
   <body>
     <div class="header">
+      <a href="/user/clear">Clear all users</a>
       {% block header %}{{ message }}{% end %}
     </div>
     {% block main %}{% end %}

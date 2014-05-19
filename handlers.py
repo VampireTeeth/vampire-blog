@@ -118,6 +118,11 @@ class LogoutHandler(BaseHandler):
         self.redirect('/')
 
 
+class ClearAllUserHandler(BaseHandler):
+    def get(self):
+        User.objects().delete()
+        self.redirect('/logout')
+
 class ArticleHandler(BaseHandler):
 
     @tornado.web.authenticated

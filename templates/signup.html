@@ -2,33 +2,33 @@
 
 {% block main %}
 
-<form action="/signup" method="post">
+  <form action="/signup" method="post" id="signupform">
 
-    <div id="error">
-        <span>{{errormsg}}</span>
+    <div>
+        <span id="error">{{errormsg}}</span>
     </div>
-    <fieldset id="email">
+    <fieldset>
         <legend>Email</legend>
-        <input type="text" name="email" value=""/>
+        <input type="text" name="email" id="email" value=""/>
     </fieldset>
 
-    <fieldset id="password">
+    <fieldset>
         <legend>Password</legend>
-        <input type="password" name="password" value=""/>
+        <input type="password" name="password" id="password" value=""/>
     </fieldset>
 
-    <fieldset id="firstname">
+    <fieldset>
         <legend>First name</legend>
-        <input type="text" name="firstname" value=""/>
+        <input type="text" name="firstname" id="firstname" value=""/>
     </fieldset>
 
-    <fieldset id="lastname">
+    <fieldset>
         <legend>Last name</legend>
-        <input type="text" name="lastname" value=""/>
+        <input type="text" name="lastname" id="lastname" value=""/>
     </fieldset>
 
-    <fieldset id="submit">
-        <input type="submit" value="Signup"/>
+    <fieldset>
+        <input type="submit" id="submit" value="Signup"/>
     </fieldset>
   </form>
 {% end %}

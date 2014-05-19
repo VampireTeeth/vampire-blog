@@ -3,7 +3,8 @@ import os.path
 import tornado.ioloop
 import tornado.web
 from mongoengine import connect
-from handlers import MainHandler, UserHandler, LoginHandler, SignupHandler, LogoutHandler, ArticleHandler
+from handlers import MainHandler, UserHandler, \
+        LoginHandler, SignupHandler, LogoutHandler, ArticleHandler, ClearAllUserHandler
 
 
 
@@ -26,6 +27,7 @@ if __name__ == '__main__':
         (r'/signup', SignupHandler),
         (r'/logout', LogoutHandler),
         (r'/article/add', ArticleHandler),
+        (r'/user/clear', ClearAllUserHandler),
         (r'/.*', MainHandler, dict(db=db)),
     ], **settings)
 
